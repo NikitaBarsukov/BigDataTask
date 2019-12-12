@@ -30,8 +30,13 @@ To do this:
 
 #### Step 2. Run App.
 First of all build the app.
+
 ```
-gradlew jar
+chmod +x gradlew
+```
+
+```
+./gradlew jar
 ```
 
 Then you can run the app via java
