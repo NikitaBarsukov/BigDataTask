@@ -34,12 +34,12 @@ public class MyPacketListener implements PacketListener {
         System.out.println(AMOUNT);
         if (AMOUNT >= MIN && notNotificatedMin) {
             System.out.println("reached MIN=" + MIN);
-//            Producer.sendMessage("Reached MIN" + MIN);
+            Producer.sendMessage("Reached MIN" + MIN);
             notNotificatedMin = false;
         }
         if (AMOUNT >= MAX && notNotificatedMax) {
             System.out.println("reached MAX=" + MAX);
-//            Producer.sendMessage("Reached MAX=" + MAX);
+            Producer.sendMessage("Reached MAX=" + MAX);
             notNotificatedMax = false;
         }
     }
