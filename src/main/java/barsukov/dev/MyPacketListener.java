@@ -12,7 +12,7 @@ public class MyPacketListener implements PacketListener {
     private       int       AMOUNT                   = 0;
     private       boolean   notNotificatedMin        = true;
     private       boolean   notNotificatedMax        = true;
-    private final int       UPDATE_MINUTES           = 5;
+    private final int       UPDATE_MINUTES           = 20;
     private final int       COLLECTING_CYCLE_MINUTES = 5;
     private       LocalTime updateTime               = LocalTime.now().plusMinutes(UPDATE_MINUTES);
     private       LocalTime cycleTime                = LocalTime.now().plusMinutes(COLLECTING_CYCLE_MINUTES);
@@ -34,12 +34,12 @@ public class MyPacketListener implements PacketListener {
         System.out.println(AMOUNT);
         if (AMOUNT >= MIN && notNotificatedMin) {
             System.out.println("reached MIN=" + MIN);
-            Producer.sendMessage("Reached MIN" + MIN);
+//            Producer.sendMessage("Reached MIN" + MIN);
             notNotificatedMin = false;
         }
         if (AMOUNT >= MAX && notNotificatedMax) {
             System.out.println("reached MAX=" + MAX);
-            Producer.sendMessage("Reached MAX=" + MAX);
+//            Producer.sendMessage("Reached MAX=" + MAX);
             notNotificatedMax = false;
         }
     }
@@ -58,15 +58,18 @@ public class MyPacketListener implements PacketListener {
     private void checkForLimitsUpdate() throws SQLException {
         if (LocalTime.now().isAfter(updateTime)) {
             getLimits();
-            updateTime = LocalTime.now().plusSeconds(UPDATE_MINUTES);
+            updateTime = LocalTime.now().plusMinutes(UPDATE_MINUTES);
             updateNotificationStatus();
             System.out.println("Limits updated by updateTime");
         }
     }
 
     private void checkForTimerRestart() {
-        if (LocalTime.now().isAfter(cycleTime)){
+        if (LocalTime.now().isAfter(cycleTime)) {
             AMOUNT = 0;
+            cycleTime = LocalTime.now().plusMinutes(COLLECTING_CYCLE_MINUTES);
+            System.out.println("Amount set 0");
+            updateNotificationStatus();
         }
     }
 }
