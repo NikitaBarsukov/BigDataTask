@@ -28,7 +28,7 @@ public class NetworkCapturer {
         int readTimeout = 0; // in milliseconds
         final PcapHandle handle;
         handle = device.openLive(snapshotLength, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, readTimeout);
-
+        Database.init();
         PacketListener listener = new MyPacketListener();
         ((MyPacketListener) listener).getLimits();
 
