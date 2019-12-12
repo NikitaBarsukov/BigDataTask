@@ -21,7 +21,7 @@ public class Database {
     private static final String SCHEMA_NAME = "traffic_limits";
     private static final String TABLE_NAME  = "limits_per_hour";
 
-    public static void main(String[] args) throws SQLException {
+    public static void init() throws SQLException {
         init_db();
         createTable();
         setValues();
