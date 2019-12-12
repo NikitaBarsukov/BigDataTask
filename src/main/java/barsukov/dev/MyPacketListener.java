@@ -7,13 +7,15 @@ import java.sql.SQLException;
 import java.time.LocalTime;
 
 public class MyPacketListener implements PacketListener {
-    private       Long      MIN               = 300L;
-    private       Long      MAX               = 10000L;
-    private       int       AMOUNT            = 0;
-    private       boolean   notNotificatedMin = true;
-    private       boolean   notNotificatedMax = true;
-    private final int       UPDATE_MINUTES    = 3;
-    private       LocalTime updateTime        = LocalTime.now().plusSeconds(UPDATE_MINUTES);
+    private       Long      MIN                      = 300L;
+    private       Long      MAX                      = 10000L;
+    private       int       AMOUNT                   = 0;
+    private       boolean   notNotificatedMin        = true;
+    private       boolean   notNotificatedMax        = true;
+    private final int       UPDATE_MINUTES           = 5;
+    private final int       COLLECTING_CYCLE_MINUTES = 5;
+    private       LocalTime updateTime               = LocalTime.now().plusMinutes(UPDATE_MINUTES);
+    private       LocalTime cycleTime                = LocalTime.now().plusMinutes(COLLECTING_CYCLE_MINUTES);
 
     @Override
     public void gotPacket(Packet packet) {
@@ -22,6 +24,7 @@ public class MyPacketListener implements PacketListener {
         try {
             boundaryCheck();
             checkForLimitsUpdate();
+            checkForTimerRestart();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -58,6 +61,12 @@ public class MyPacketListener implements PacketListener {
             updateTime = LocalTime.now().plusSeconds(UPDATE_MINUTES);
             updateNotificationStatus();
             System.out.println("Limits updated by updateTime");
+        }
+    }
+
+    private void checkForTimerRestart() {
+        if (LocalTime.now().isAfter(cycleTime)){
+            AMOUNT = 0;
         }
     }
 }
